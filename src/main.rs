@@ -26,6 +26,9 @@ fn main() {
     type_inference();
     compute_digest("Hello");
     scope_shadowing();
+
+    move_semantic();
+    copy_cloning();
 }
 
 fn type_array() {
@@ -177,4 +180,37 @@ fn scope_shadowing() {
         println!("shodowed in inner scopr scope: {a}");
     }
     println!("After: {a}");
+}
+
+
+// Move Semantics
+//  -move ownership
+fn move_semantic() {
+    let s1: String = String::from("Hello");
+    let s2: String =  s1;
+    println!("s2: {s2}");
+    // println!("s1: {s1}");
+}
+
+fn say_hello(name: String)  {
+    println!("Hello {name}");
+}
+
+fn move_in_func() {
+    let name =  String::from("Rust");
+    say_hello(name);
+    // say_hello(name);
+}
+
+
+#[derive(Copy, Clone, Debug)]
+struct Point(i32, i32);
+
+fn copy_cloning() {
+    let p1 = Point(3, 4);
+    let p2 = p1;
+    let p3 = p1.clone();
+
+    println!("p1: {p1:?}");
+    println!("p2: {p2:?}");
 }
