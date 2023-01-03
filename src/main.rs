@@ -21,6 +21,8 @@ fn main() {
 
     method();
     implicit_conv();
+
+    array_loop();
 }
 
 fn type_array() {
@@ -103,4 +105,27 @@ fn implicit_conv() {
 
     println!("{x} * {y} = {}", multiply(x.into(), y));
 
+}
+
+fn array_loop() {
+    let array = [10, 20, 30];
+    println!("array: {array:?}");
+
+    for n in array {
+        print!(" {n}");
+    }
+    println!();
+
+    for i in  0..3 {
+        print!(" {}", array[i]);
+    }
+}
+
+fn variables() {
+    let x: i32 = 10;
+    println!("x: {x}");
+
+    // immutable  by default
+    // x = 20;
+    // println!("x: {x}");
 }
