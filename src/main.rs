@@ -23,6 +23,9 @@ fn main() {
     implicit_conv();
 
     array_loop();
+    type_inference();
+    compute_digest("Hello");
+    scope_shadowing();
 }
 
 fn type_array() {
@@ -128,4 +131,50 @@ fn variables() {
     // immutable  by default
     // x = 20;
     // println!("x: {x}");
+}
+
+// Type Inference
+fn take_u32(x: u32) {
+    println!("u32: {x}");
+}
+
+fn take_i8(y: i8) {
+    println!("i8: {y}");
+}
+
+fn type_inference() {
+    let x = 10;
+    let y = 20;
+
+    take_u32(x);
+    take_i8(y);
+    take_u32(y.try_into().unwrap());
+}
+
+// Static and Constant Variables
+const DIGEST_SIZE: usize = 3;
+const ZERO: Option<u8> = Some(42);
+
+fn compute_digest(text: &str) -> [u8; DIGEST_SIZE] {
+    let mut digest = [ZERO.unwrap_or(0); DIGEST_SIZE];
+    for (idx, &b) in text.as_bytes().iter().enumerate() {
+        digest[idx % DIGEST_SIZE] = digest[idx % DIGEST_SIZE].wrapping_add(b);
+    }
+    println!("Digest: {digest:?}");
+    digest
+}
+
+// Scope and Shadowing
+fn scope_shadowing() {
+    let a = 10;
+    println!("Before: {a}");
+
+    {
+        let a = "Hello";
+        println!("inner scope: {a}");
+
+        let a = true;
+        println!("shodowed in inner scopr scope: {a}");
+    }
+    println!("After: {a}");
 }
