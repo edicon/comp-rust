@@ -33,6 +33,12 @@ fn main() {
     copy_cloning();
     borrowing();
     shared_unique_borrow();
+
+    lifetime_function();
+    lifetime_data();
+
+    // Day2
+    struct_method();
 }
 
 fn type_array() {
@@ -66,7 +72,8 @@ fn slices() {
     println!("a: {a:?}, {:?}", a);
 
     let s: &[i32] = &a[2..4];
-    println!("s: {s:?}");
+    let s2: &[i32] = &a[2..4]; // Copied
+    println!("a: {a:?}, s: {s:?}");
 
     // let ss: [i32; 2] = &a[2..4];
     // println!("s: {s:?} {ss:?}");
@@ -235,12 +242,90 @@ fn borrowing()  {
 fn shared_unique_borrow() {
     let mut a: i32 = 10;
     let b: &i32 = &a;
+    // let c: &i32 = &a;
 
-    // {
-    //     let c: &mut i32 = &mut a;
-    //     *c = 20;
-    // }
+    {
+        // let c: &mut i32 = &mut a;
+        // *c = 20;
+    }
 
     println!("a: {a}");
     println!("b: {b}");
 }
+
+// Lifetime in function: &'a
+fn left_most<'a>(p1: &'a Point, p2: &'a Point) -> &'a Point {
+    if p1.0 < p2.0 { p1 } else { p2 }
+}
+
+fn lifetime_function() {
+    let p1: Point = Point(10, 10);
+    let p2: Point = Point(20, 20);
+    let p3: &Point = left_most(&p1, &p2);
+    println!("left-most point: {:?}", p3);
+}
+
+// Lifetime in data structure &'doc
+#[derive(Debug)]
+// struct Highlight<'doc>(&'doc str);
+struct Highlight<'doc>(&'doc str);
+
+fn erase(text: String) {
+    println!("Bye {text}");
+}
+
+fn lifetime_data() {
+    let text =  String::from("The quick brown fox jumps over the lazy dog.");
+    let fox = Highlight(&text[4..19]);
+    let dog = Highlight(&text[35..43]);
+    // erase(text);  // can't move because of borrowed
+    println!("{fox:?}");
+    println!("{dog:?}");
+}
+
+
+// Day2
+//  Struct:: Method
+#[derive(Debug)]
+struct Race {
+    name: String,
+    laps: Vec<i32>,
+}
+
+impl Race {
+    fn new(name: &str) -> Race {  // No receiver, a static method
+        Race { name: String::from(name), laps: Vec::new() }
+    }
+
+    fn add_lap(&mut self, lap: i32) {  // Exclusive borrowed read-write access to self
+        self.laps.push(lap);
+    }
+
+    fn print_laps(&self) {  // Shared and read-only borrowed access to self
+        println!("Recorded {} laps for {}:", self.laps.len(), self.name);
+        for (idx, lap) in self.laps.iter().enumerate() {
+            println!("Lap {idx}: {lap} sec");
+        }
+    }
+
+    fn finish(self) {  // Exclusive ownership of self
+        let total = self.laps.iter().sum::<i32>();
+        println!("Race {} is finished, total lap time: {}", self.name, total);
+    }
+}
+
+fn struct_method() {
+    let mut race = Race::new("Monaco Grand Prix");
+    race.add_lap(70);
+    race.add_lap(68);
+    race.print_laps();
+    race.add_lap(71);
+    race.print_laps();
+    race.finish();
+
+    // race.add_lap(71);
+    // race.print_laps();
+}
+
+// Pattern matching like as  switch
+
