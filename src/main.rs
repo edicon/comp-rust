@@ -39,6 +39,7 @@ fn main() {
 
     // Day2
     struct_method();
+    destructuring_enums();
 }
 
 fn type_array() {
@@ -329,3 +330,35 @@ fn struct_method() {
 
 // Pattern matching like as  switch
 
+fn pattern_matching() {
+    let input = 'x';
+
+    match input {
+        'q'         => println!("Quiting"),
+        'a' | 's'   => println!("Quiting"),
+        '0'..='9'   => println!("Number"),
+        _           => println!("Something else"), // _: wildcard
+    }
+}
+
+
+enum Result {
+    Ok(i32),
+    Err(String),
+}
+
+fn divide_in_two(n: i32) -> Result {
+    if n % 2 == 0 {
+        Result::Ok(n / 2)
+    } else {
+        Result::Err(format!("cannot divide {} into two equal parts", n))
+    }
+}
+
+fn destructuring_enums() {
+    let n = 100;
+    match divide_in_two(n) {
+        Result::Ok(half) => println!("{n} divided in two is {half}"),
+        Result::Err(msg) => println!("sorry, an error happened: {msg}"),
+    }
+}
