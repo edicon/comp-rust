@@ -38,8 +38,12 @@ fn main() {
     lifetime_data();
 
     // Day2
+    pattern_matching();
     struct_method();
     destructuring_enums();
+
+    if_let_express();
+    while_let_express()
 }
 
 fn type_array() {
@@ -195,7 +199,7 @@ fn scope_shadowing() {
 }
 
 
-// Move Semantics
+// ove Semantics
 //  -move ownership
 fn move_semantic() {
     let s1: String = String::from("Hello");
@@ -232,13 +236,26 @@ fn copy_cloning() {
 fn add(p1: &Point, p2: &Point) -> Point {
     Point(p1.0 + p2.0, p1.1 + p2.1)
 }
+fn add2(p1: &Point, p2: &Point) -> Point {
+    let p3: Point = Point(p1.0 + p2.0, p1.1 + p2.1);
+    p3
+}
 // Borrowing
 fn borrowing()  {
     let p1 = Point(3, 4);
     let p2 = Point(10, 20);
     let p3 = add(&p1, &p2);
     println!("{p1:?} + {p2:?} = {p3:?}");
+    let p4 = add(&p1, &p2);
+    println!("{p1:?} + {p2:?} = {p4:?}");
+
+    // Closer
+    let add3 = |p1: &Point, p2: &Point| -> Point {
+        Point(p1.0 + p2.0, p1.1 + p2.1)
+    };
+    add3(&p1, &p2);
 }
+
 
 fn shared_unique_borrow() {
     let mut a: i32 = 10;
@@ -254,17 +271,27 @@ fn shared_unique_borrow() {
     println!("b: {b}");
 }
 
-// Lifetime in function: &'a
-fn left_most<'a>(p1: &'a Point, p2: &'a Point) -> &'a Point {
+// Lifetime in function: &'a, &'ab, &'doc like as named register
+fn lifetime_left_most<'a>(p1: &'a Point, p2: &'a Point) -> &'a Point {
     if p1.0 < p2.0 { p1 } else { p2 }
 }
 
 fn lifetime_function() {
     let p1: Point = Point(10, 10);
     let p2: Point = Point(20, 20);
-    let p3: &Point = left_most(&p1, &p2);
+    let p3: &Point = lifetime_left_most(&p1, &p2);
     println!("left-most point: {:?}", p3);
 }
+
+// fn no_lifetime_left_most(p1: &Point, p2: &Point) -> &Point {
+//     if p1.0 < p2.0 { p1 } else { p2 }
+// }
+//
+// fn  no_lifetime_function () {
+//     let p1: Point = Point(10, 10);
+//     let p2: Point = Point(20, 20);
+//     let p3: Point =  no_lifetime_left_most( &p1, &p2);
+// }
 
 // Lifetime in data structure &'doc
 #[derive(Debug)]
@@ -286,7 +313,7 @@ fn lifetime_data() {
 
 
 // Day2
-//  Struct:: Method
+//  Struct:: ethod
 #[derive(Debug)]
 struct Race {
     name: String,
@@ -316,7 +343,7 @@ impl Race {
 }
 
 fn struct_method() {
-    let mut race = Race::new("Monaco Grand Prix");
+    let mut race = Race::new("onaco Grand Prix");
     race.add_lap(70);
     race.add_lap(68);
     race.print_laps();
@@ -360,5 +387,25 @@ fn destructuring_enums() {
     match divide_in_two(n) {
         Result::Ok(half) => println!("{n} divided in two is {half}"),
         Result::Err(msg) => println!("sorry, an error happened: {msg}"),
+    }
+}
+
+
+fn if_let_express() {
+    let arg = std::env::args().next();
+    if  let Some(value)  = arg {
+        println!("Program name {value}");
+    } else   {
+        println!("Missing name?");
+    }
+
+}
+
+fn while_let_express() {
+    let v = vec![10, 20, 30];
+    let mut iter = v.into_iter();
+
+    while let Some(x) = iter.next() {
+        println!("x: {x}");
     }
 }
