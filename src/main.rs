@@ -425,6 +425,7 @@ fn option_result() {
     }
 }
 
+//https://ferrous-systems.github.io/teaching-material/control-flow.html#/_using_option_and_result_2
 fn option_result2() {
     let file_open: Result<File, std::io::Error> = File::open("Does noet exist");
 
