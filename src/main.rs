@@ -1,3 +1,6 @@
+use std::fs::File;
+// use std::io::{Error};
+
 fn main() {
     let mut x: i32 = 6;
     print!("{x}");
@@ -43,7 +46,10 @@ fn main() {
     destructuring_enums();
 
     if_let_express();
-    while_let_express()
+    while_let_express();
+
+    option_result();
+    option_result2();
 }
 
 fn type_array() {
@@ -369,24 +375,24 @@ fn pattern_matching() {
 }
 
 
-enum Result {
+enum ResultMe {
     Ok(i32),
     Err(String),
 }
 
-fn divide_in_two(n: i32) -> Result {
+fn divide_in_two(n: i32) -> ResultMe {
     if n % 2 == 0 {
-        Result::Ok(n / 2)
+        ResultMe::Ok(n / 2)
     } else {
-        Result::Err(format!("cannot divide {} into two equal parts", n))
+        ResultMe::Err(format!("cannot divide {} into two equal parts", n))
     }
 }
 
 fn destructuring_enums() {
     let n = 100;
     match divide_in_two(n) {
-        Result::Ok(half) => println!("{n} divided in two is {half}"),
-        Result::Err(msg) => println!("sorry, an error happened: {msg}"),
+        ResultMe::Ok(half) => println!("{n} divided in two is {half}"),
+        ResultMe::Err(msg) => println!("sorry, an error happened: {msg}"),
     }
 }
 
@@ -407,5 +413,23 @@ fn while_let_express() {
 
     while let Some(x) = iter.next() {
         println!("x: {x}");
+    }
+}
+
+fn option_result() {
+    // let will_overflow: Option<u8> = 10_u8.checked_add(200);
+    let will_overflow: Option<u8> = 10_u8.checked_add(250);
+    match will_overflow {
+        Some(sum) => println!("interesting: {}", sum),
+        None => eprintln!("addition overflow"),
+    }
+}
+
+fn option_result2() {
+    let file_open: Result<File, std::io::Error> = File::open("Does noet exist");
+
+    match file_open {
+        Ok(f) => println!("File: {:?}", f),
+        Err(e) => eprintln!("Open failed: {:?}", e),
     }
 }
