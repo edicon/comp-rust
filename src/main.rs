@@ -50,6 +50,8 @@ fn main() {
 
     option_result();
     option_result2();
+
+    heap_allocation();
 }
 
 fn type_array() {
@@ -433,4 +435,10 @@ fn option_result2() {
         Ok(f) => println!("File: {:?}", f),
         Err(e) => eprintln!("Open failed: {:?}", e),
     }
+}
+
+fn heap_allocation() {
+    let point = Point (1, 1);
+    let point_on_heap = Box::new(point);
+    println!{"point: {:?}, on_heap: {:?}", point, point_on_heap};
 }
