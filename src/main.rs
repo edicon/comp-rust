@@ -1,6 +1,8 @@
 use std::fs::File;
 // use std::io::{Error};
 
+mod traits;
+
 fn main() {
     let mut x: i32 = 6;
     print!("{x}");
@@ -52,6 +54,8 @@ fn main() {
     option_result2();
 
     heap_allocation();
+
+    traits::run();
 }
 
 fn type_array() {
