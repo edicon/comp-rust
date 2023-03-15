@@ -11,15 +11,14 @@ pub fn run() {
 }
 
 fn ownership_func1() {
-    let string = "Copy value to stack";
+    let string = "Copy Ownership";
     println!("{:p}", string);
 
-    // Copy to stack and bind
-    foo(string);
+    // Literal Type: Copy to stack and bind
+    copy_ownership(string);
 }
-
-fn  foo(string: &str) {
-    println!("Copying Ownership: {:p}", string)
+fn  copy_ownership(string: &str) {
+    println!("{}: {:p}", string, string)
 }
 
 fn ownership_func2() {
@@ -27,15 +26,14 @@ fn ownership_func2() {
     println!("{:p}", string.as_ptr());
 
     // Move ownership to bar
-    bar(string.clone());
-    bar(string);
+    move_ownership(string.clone());
+    move_ownership(string);
 
     // Error because of ownership
     // println!("{}", string);
 }
-
-fn  bar(string: String) {
-    println!("Moving Ownership: {:p}", string.as_ptr())
+fn  move_ownership(string: String) {
+    println!("{}: {:p}", string, string.as_ptr())
 }
 
 fn giving_ownership() {
@@ -45,26 +43,26 @@ fn giving_ownership() {
 
 fn take_ownership() -> String {
     let string = String::from("Taking Ownership");
-    println!("Taking Ownership: {:p}", string.as_ptr());
+    println!("{}: {:p}", string, string.as_ptr());
     return string;
 }
 
 fn  give_take_ownership() {
     let string = String::from("Give & Take Ownership");
-    println!("Give & Take Ownership: {:p}", string.as_ptr());
+    println!("{}: {:p}", string, string.as_ptr());
     give_take(string);
 
 }
 
 fn give_take(string: String) -> String {
-    let string = String::from("Give * Take");
-    println!("Give & Take: {:p}", string.as_ptr());
+    let string = String::from("Give & Take");
+    println!("{}: {:p}", string, string.as_ptr());
     return string;
 }
 
 fn reference_borrowing() {
     let string = String::from("Reference and Borrowing");
-    println!("Reference & Borrowing: {:p}", string.as_str());
+    println!("{}: {:p}", string, string.as_str());
 
     borrowing(&string); // Borrowing: reference of  String type
 }
@@ -99,6 +97,6 @@ fn dangling_reference() {
 fn dangling() -> String {
     let string = String::from("Dangle String");
     println!("{}, {:p}", string, &string);
-    // string   // Move Ownership: No Error
-    &string     // Error: borrowing
+    string   // Move Ownership: No Error
+    // &string     // Dangling Error: borrowing
 }
