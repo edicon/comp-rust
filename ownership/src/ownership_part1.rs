@@ -1,10 +1,10 @@
 // Ownerchip(Part1): https://medium.com/@thomascountz/ownership-in-rust-part-1-112036b1126b
 pub fn run() {
-    let hello = "Hello, World";
+    let hello = "Copy value & ownership";
     let hello1 = hello; // Copy(reference) and Binding
     println!("Copyed: {}, {}", hello, hello1);
 
-    let hello = String::from("Hello World");
+    let hello = String::from("Move value & ownership");
     let hello1 = hello; // Move and Binding, Ownership is gone
     println!("Moved: {}", hello1);
     // println!("Moved: {}", hello);  // ERROR
