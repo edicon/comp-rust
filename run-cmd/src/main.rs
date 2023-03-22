@@ -15,7 +15,7 @@ fn main() {
     println!("{:?}", cmd_spawn);
 
     // ooutput()
-    println!("Running via ooutput())");
+    println!("Running via output())");
     let cmd_output = Command::new("ls")
         .arg("-l")
         .arg("-a")
@@ -25,7 +25,7 @@ fn main() {
     println!("{:?}", cmd_output);
 
     // spawn()
-    println!("Running via spawn())");
+    println!("Running via status())");
     let cmd_status = Command::new("ls")
         .arg("-l")
         .arg("-a")
