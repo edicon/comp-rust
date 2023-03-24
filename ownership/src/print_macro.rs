@@ -1,6 +1,6 @@
 
 pub fn run() {
-    println!("Ownership Part2:");
+    println!("Print Macro:");
 
     let name = "Rust";
     let version = 1.60;
