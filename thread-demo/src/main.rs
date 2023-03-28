@@ -3,8 +3,8 @@
 use std::{thread, thread::JoinHandle, time::Duration};
 use rand::{self, Rng};
 
-
 mod channel;
+
 fn main() {
     let handle: JoinHandle<i32> = thread::spawn(|| {
         let mut rng = rand::thread_rng();
