@@ -2,9 +2,12 @@
 mod print_macro;
 mod ownership_part1;
 mod ownership_part2;
+// cow: Copy on Write
+mod cow_demo;
 
 fn main() {
     print_macro::run();
     ownership_part1::run();
     ownership_part2::run();
+    cow_demo::run();
 }
