@@ -19,4 +19,20 @@ fn shadow_variable() {
     // shadow_num = 10; // error: cannot assign twice to immutable variable
 
     println!("The value of shadow_num is: {}", shadow_num);
+
+    string_type();
+}
+
+
+fn string_type() {
+    let character_1: char = 's';
+    let character_2: char = 'f';
+
+    let smiley_face = '😃';
+    let string_1 = "miley ";
+
+    let string_2: &str = "face";
+    // let string_2: str = "face";
+
+    println!("{} is {}{}{}{}.", smiley_face, character_1, character_2, string_1, string_2);
 }
