@@ -12,6 +12,7 @@ fn main() {
     arrays();
     vectors();
     hash_map();
+    some_none();
 }
 
 // shadow: mutable 선언 없이 변수를 변경, 
@@ -23,7 +24,7 @@ fn shadow_variable() {
 
     // shadow_num = 10; // error: cannot assign twice to immutable variable
 
-    println!("The value of shadow_num is: {}", shadow_num);
+    println!("The value of shadow_num is: {}\n", shadow_num);
 }
 
 // String
@@ -39,7 +40,7 @@ fn string_type() {
     let string_2: &str = "face";
     // let string_2: str = "face";
 
-    println!("{} is {}{}{}{}.", smiley_face, character_1, character_2, string_1, string_2);
+    println!("{} is {}{}{}{}\n", smiley_face, character_1, character_2, string_1, string_2);
 }
 
 // Arrays
@@ -51,7 +52,7 @@ fn arrays() {
 
     println!("The first element  of array_1 is: {}", array_1[0]);
     println!("The second element of array_2 is: {}", array_2[1]);
-    println!("The third element  of array_3 is: {}", array_3[2]);
+    println!("The third element  of array_3 is: {}\n", array_3[2]);
 
     // out of array
     // let array_5 = array_1[5];
@@ -76,9 +77,9 @@ fn vectors() {
 
     // out of array, 
     // - array와 달리 범위를 벗어나는 경우를 방지할 수 없다.
-    let vector_5 = vector_1[5];
-    println!("The sixth element of vector_1 is: {:?}", vector_1[5]); // error: index out of bounds
-    //
+    // let vector_5 = vector_1[5];
+    // println!("The sixth element of vector_1 is: {:?}", vector_1[5]); // error: index out of bounds
+    
     // Create empty vector, declare vector mutable so it can grow and shrink
     // let mut vector_t: Vec<T> = Vec::new();
     let mut vector_4: Vec<String> = Vec::new();
@@ -90,8 +91,35 @@ fn vectors() {
     vector_4.push("Hello world".to_string());
 }
 
-
 // Hash Map
+// -hash.insert(key, value)
+// -hash.remove(key)
+// -hash.get(key): Some(), None
 fn hash_map() {
+    use std::collections::HashMap;
+    let mut reviews: HashMap<String, String> = HashMap::new();
 
+    reviews.insert(String::from("Ancient Roman History"), String::from("Very accurate."));
+    reviews.insert(String::from("Cooking with Rhubarb"), String::from("Sweet recipes."));
+    reviews.insert(String::from("Programming in Rust"), String::from("Great examples."));
+
+    // Look for a specific review
+    let book: &str = "Programming in Rust";
+    println!("\nReview for \'{}\': {:?}", book, reviews.get(book));
+}
+
+fn some_none() {
+    match divide(10, 2) {
+        Some(result) => println!("나누기 결과: {}", result),
+        None => println!("나누기 실패"),
+    }
+}
+
+// 함수의 return값으로 Option<T>
+fn divide(a: i32, b: i32) -> Option<i32> {
+    if b == 0 {
+        None
+    } else {
+        Some(a / b)
+    }
 }
