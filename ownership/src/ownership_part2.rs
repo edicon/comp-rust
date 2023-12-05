@@ -17,7 +17,7 @@ fn ownership_func1() {
     // Literal Type: Copy to stack and bind
     copy_ownership(string);
 }
-fn  copy_ownership(string: &str) {
+fn copy_ownership(string: &str) {
     println!("{}: {:p}", string, string)
 }
 
@@ -32,7 +32,7 @@ fn ownership_func2() {
     // Error because of ownership
     // println!("{}", string);
 }
-fn  move_ownership(string: String) {
+fn move_ownership(string: String) {
     println!("{}: {:p}", string, string.as_ptr())
 }
 
@@ -47,11 +47,10 @@ fn take_ownership() -> String {
     return string;
 }
 
-fn  give_take_ownership() {
+fn give_take_ownership() {
     let string = String::from("Give & Take Ownership");
     println!("{}: {:p}", string, string.as_ptr());
     give_take(string);
-
 }
 
 fn give_take(string: String) -> String {
@@ -70,12 +69,17 @@ fn reference_borrowing() {
 // Borrowing: reference of  String type
 // No ownership but only borrowed
 // Ampersands indicate references, which allow the passing of values without giving up ownership!
-fn borrowing(string: &String) { 
+fn borrowing(string: &String) {
     println!("Borrowing: {}, {:p}, {:p}", string, string, string.as_str());
     nested_borrowing(string);
 }
-fn nested_borrowing(string: &String) { 
-    println!("Nested Borrowing: {}, {:p}, {:p}", string, string, string.as_str());
+fn nested_borrowing(string: &String) {
+    println!(
+        "Nested Borrowing: {}, {:p}, {:p}",
+        string,
+        string,
+        string.as_str()
+    );
 }
 
 fn mutability() {
@@ -97,6 +101,6 @@ fn dangling_reference() {
 fn dangling() -> String {
     let string = String::from("Dangle String");
     println!("{}, {:p}", string, &string);
-    string   // Move Ownership: No Error
-    // &string     // Dangling Error: borrowing
+    string // Move Ownership: No Error
+           // &string     // Dangling Error: borrowing
 }
