@@ -209,3 +209,90 @@ fn safe_division(dividend: f64, divisor: f64) -> Result<f64, DivisionByZeroError
         Ok(dividend / divisor)
     }
 }
+
+// Ownership
+// - Move ownership
+//   let mascot = String::from("ferris");
+//   let ferris = mascot; // move ownership to ferris
+//
+fn ownership() {
+    move_ownership();
+    clone_ownership();
+    copy_ownership();
+    borrow_ownership();
+
+    let mut greeting = String::from("hello");
+    change(&mut greeting);
+
+    mutable_reference();
+}
+
+// - Move ownership
+fn move_ownership() {
+    let s = String::from("Hello, world!");
+    move_process(s); // Ownership of the string in `s` moved into `process`
+    move_process(s); // Error! ownership already moved.
+}
+
+// - Clone ownership
+fn clone_ownership() {
+    let s = String::from("Hello, world!");
+    move_process(s.clone());
+    move_process(s);
+}
+fn move_process(input: String) {}
+
+// - Copy ownership
+fn copy_ownership() {
+    let s = 1u32;
+    copy_process(s); // Ownership of the string in `s` moved into `process`
+    copy_process(s); // Error! ownership already moved.
+}
+fn copy_process(input: u32) {}
+
+// - Borrow ownership( pass reference by using & )
+fn borrow_ownership() {
+    let greeting = String::from("hello");
+    let greeting_reference = &greeting; // We borrow `greeting` but the string data is still owned by `greeting`
+    println!("Greeting: {}", greeting);
+
+    let s = String::from("Hello, world!");
+    borrow_process(&s); // Ownership of the string in `s` moved into `process`
+    borrow_process(&s); // Error! ownership already moved.
+}
+fn borrow_process(input: &String) {}
+
+// &:    reference not change value: immutable reference
+// &mut: reference change value --> Only one mutable reference to a particular piece of data in a particular scope
+fn change(text: &mut String) {
+    text.push_str(", world");
+}
+
+// &<T> : reference
+// &mut <T>: mutable reference
+fn mutable_reference() {
+    // multiple immutable references
+    let iref = String::from("Immutable Ref");
+    let iref1 = &iref
+    let iref2 = &iref // error: cannot borrow `s` as mutable more than once at a time
+    println!("{}, {}", iref1, iref2);
+    //
+    // Only one mutable reference
+    let mut mref = String::from("Mutable Ref");
+    let mref1 = &mut mref
+    let mref2 = &mut mref // error: cannot borrow `s` as mutable more than once at a time
+    // Obly one mutavle reference
+    println!("{}, {}", mref1, mref2);
+}
+
+// Lifetime, 유효한 참조
+// 모든 참조는 lifetime을 가지고 있다.
+// y개 대여된 후 삭제되었지만, x는 여전히 참조한다 <-- error.
+fn lifetime() {
+    let x;
+    {
+        let y = 42;
+        x = &y; // We store a reference to `y` in `x` but `y` is about to be dropped.
+    }
+    println!("x: {}", x); // `x` refers to `y` but `y has been dropped!
+}
