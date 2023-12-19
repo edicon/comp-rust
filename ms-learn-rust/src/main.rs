@@ -13,6 +13,8 @@ fn main() {
     vectors();
     hash_map();
     some_none();
+
+    handle_error();
 }
 
 // shadow: mutable 선언 없이 변수를 변경, 
@@ -121,5 +123,89 @@ fn divide(a: i32, b: i32) -> Option<i32> {
         None
     } else {
         Some(a / b)
+    }
+}
+
+fn handle_error() {
+    // panic_macro();
+    // panic_array();
+    option_enum();
+    result_enum();
+}
+
+// #[warn(dead_code)]
+fn panic_macro() {
+    panic!("crash and burn");
+}
+
+fn panic_array() {
+    let v = vec![1, 2, 3];
+
+    v[99];
+}
+
+// 값이 있거나 없는경우
+// - 함수의 return 값으로 사용: Oprion(String): 선택적 문자열(있어가 없거나)
+// emum Option<T> {
+//    Some(T),
+//    None,
+// }
+// Vec::get(index): Oprion<T>: Some(&T), None
+fn option_enum()  {
+    let fruits = vec!["banana", "apple", "coconut", "orange", "strawberry"];
+    for &index in [0, 2, 99].iter() {
+        match fruits.get(index) {
+            Some(&"coconut") => println!("Coconuts are awesome!!!"),
+            Some(fruit_name) => println!("It's a delicious {}!", fruit_name),
+            None => println!("There is no fruit! :("),
+        }
+    }
+}
+
+// if let Pattern : 단일 Pattern만 사용 가능
+// - if let Some(x) = a_value { ... }
+//
+// unwrap: Option<T>의 내부 값(T)에 직접 억세스
+// - let gift = Some("candy");
+//   gift.unwrap() // "candy"
+// - panic이 발생할 수 있다.
+//
+// expect: Option<T>의 내부 값(T)에 직접 억세스, 에러 메시지를 지정할 수 있다.
+// - let nothing: Option<&str> = None;
+//   nothing.expect("This will crash");
+//
+// unwrap_or
+// - None.unwrap_or("cat")
+//
+//
+// Result<T, E>: 오류를 처리하는 열거형
+// enum Result<T, E> {
+//    Ok(T),
+//    Err(E),
+// }
+//
+// - Node이 존재할 가능성이 있는 Option<T>형식과 달리, 
+//   Error가 발생할 가능성이 있는 Result<T, E>형식
+// - unwrap / expect method 제공
+//
+fn result_enum() {
+
+    let d = safe_division(9.0, 3.0);
+    let d = safe_division(9.0, 0.0);
+
+    let d = match d {
+        Ok(v) => v,
+        Err(error) => panic!("나누기 실패 {:?}", error),
+    };
+}
+
+#[derive(Debug)]
+struct DivisionByZeroError;
+
+fn safe_division(dividend: f64, divisor: f64) -> Result<f64, DivisionByZeroError> {
+    if divisor == 0.0 {
+        Err(DivisionByZeroError)
+    } else {
+        Ok(dividend / divisor)
     }
 }
