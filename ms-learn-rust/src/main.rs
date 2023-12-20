@@ -273,19 +273,19 @@ fn change(text: &mut String) {
 fn mutable_reference() {
     // multiple immutable references
     let iref = String::from("Immutable Ref");
-    let iref1 = &iref
-    let iref2 = &iref // error: cannot borrow `s` as mutable more than once at a time
+    let iref1 = &iref;
+    let iref2 = &iref; // error: cannot borrow `s` as mutable more than once at a time
     println!("{}, {}", iref1, iref2);
     //
     // Only one mutable reference
     let mut mref = String::from("Mutable Ref");
-    let mref1 = &mut mref
-    let mref2 = &mut mref // error: cannot borrow `s` as mutable more than once at a time
+    let mref1 = &mut mref;
+    let mref2 = &mut mref; // error: cannot borrow `s` as mutable more than once at a time
     // Obly one mutavle reference
     println!("{}, {}", mref1, mref2);
 }
 
-// Lifetime, 유효한 참조
+// Lifetime : 'a
 // 모든 참조는 lifetime을 가지고 있다.
 // y개 대여된 후 삭제되었지만, x는 여전히 참조한다 <-- error.
 fn lifetime() {
