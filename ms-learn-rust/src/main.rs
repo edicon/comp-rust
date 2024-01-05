@@ -231,7 +231,7 @@ fn ownership() {
 fn move_ownership() {
     let s = String::from("Hello, world!");
     move_process(s); // Ownership of the string in `s` moved into `process`
-    move_process(s); // Error! ownership already moved.
+    // move_process(s); // Error! ownership already moved.
 }
 
 // - Clone ownership
@@ -280,19 +280,74 @@ fn mutable_reference() {
     // Only one mutable reference
     let mut mref = String::from("Mutable Ref");
     let mref1 = &mut mref;
-    let mref2 = &mut mref; // error: cannot borrow `s` as mutable more than once at a time
+    // let mref2 = &mut mref; // error: cannot borrow `s` as mutable more than once at a time
     // Obly one mutavle reference
-    println!("{}, {}", mref1, mref2);
+    // println!("{}, {}", mref1, mref2);
 }
 
 // Lifetime : 'a
 // 모든 참조는 lifetime을 가지고 있다.
 // y개 대여된 후 삭제되었지만, x는 여전히 참조한다 <-- error.
 fn lifetime() {
-    let x;
+    // let x;
     {
         let y = 42;
-        x = &y; // We store a reference to `y` in `x` but `y` is about to be dropped.
+        // x = &y; // We store a reference to `y` in `x` but `y` is about to be dropped.
     }
-    println!("x: {}", x); // `x` refers to `y` but `y has been dropped!
+    // println!("x: {}", x); // `x` refers to `y` but `y has been dropped!
 }
+
+/// Documentation tests
+///
+/// Blah blah blahs
+/// ```
+/// let result = add(2, 2);
+/// assert_eq!(result, 4);
+/// ```
+fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+
+// Unit Test
+#[test]
+fn add_works() {
+    assert_eq!(add(2, 2), 4);
+    assert_eq!(add(10, 12), 22);
+    assert_eq!(add(5, -2), 3);
+}
+
+#[test]
+fn add_fails() {
+    assert_eq!(add(2, 2), 4);
+    assert_eq!(add(10, 12), 22);
+    assert_eq!(add(5, -2), 3);
+}
+
+#[test]
+#[ignore = "not yet reviewed"]
+fn add_ignore() {
+    assert_eq!(add(2, 2), 4);
+    assert_eq!(add(10, 12), 12);
+    assert_eq!(add(5, -2), 2);
+
+}
+
+#[cfg(test)]
+mod add_tests { // <-- We create a module to group all the tests for our `add` function
+    use super::add; // <-- We bring the `add` function into scope from the parent module
+
+    #[test]
+    fn add_works() {
+        assert_eq!(add(2, 2), 4);
+        assert_eq!(add(10, 12), 22);
+        assert_eq!(add(5, -2), 3);
+    }
+
+    #[test]
+    fn add_fails() {
+        assert_eq!(add(2, 2), 4);
+        assert_eq!(add(10, 12), 22);
+        assert_eq!(add(5, -2), 3);
+    }
+}
+
